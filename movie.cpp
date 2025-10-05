@@ -9,19 +9,35 @@ struct Node {
 };
 
 void output(Node* head);
+void addHead(Node*& head, float rating, const string& comment);
+void addTail(Node*& head, float rating, const string& comment);
 
 int main() {
     Node* head = nullptr;
 
-   
-    Node* n1 = new Node{4.5, "Great movie!", nullptr};
-    Node* n2 = new Node{3.7, "Pretty good", nullptr};
-    n1->next = n2;
-    head = n1;
+    // test both ways
+    addHead(head, 4.8, "Oscar contender");
+    addTail(head, 4.1, "Brilliant lead acting");
 
     output(head);
 
     return 0;
+}
+
+void addHead(Node*& head, float rating, const string& comment) {
+    Node* newNode = new Node{rating, comment, head};
+    head = newNode;
+}
+
+void addTail(Node*& head, float rating, const string& comment) {
+    Node* newNode = new Node{rating, comment, nullptr};
+    if (!head) {
+        head = newNode;
+    } else {
+        Node* current = head;
+        while (current->next) current = current->next;
+        current->next = newNode;
+    }
 }
 
 void output(Node* head) {
@@ -31,7 +47,7 @@ void output(Node* head) {
     int total = 0;
 
     while (current) {
-        cout << "> Review #" << count++ << ": " 
+        cout << "> Review #" << count++ << ": "
              << current->rating << ": " << current->comment << endl;
         sum += current->rating;
         total++;
